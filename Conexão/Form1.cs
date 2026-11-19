@@ -29,7 +29,7 @@ namespace Conexão
             try
             {
                 conn = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=");
-                strSQL = "INSET INTO cad_cliente (nome, numero) VALUES (@NOME, @NUMERO)";
+                strSQL = "INSERT INTO cad_cliente (nome, numero) VALUES (@NOME, @NUMERO)";
 
                 comando = new MySqlCommand(strSQL, conn);
                 comando.Parameters.AddWithValue("@NOME", textBox2.Text);
@@ -124,9 +124,40 @@ namespace Conexão
 
                 while (dr.Read())
                 {
-
+                    textBox2.Text = (dr["nome"]).ToString();
+                    textBox3.Text = (dr["numero"]).ToString();
                 }
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+                conn = null;
+                comando = null;
+
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conn = new MySqlConnection("Server=localhost;Database=cad_cliente;Uid=root;Pwd=");
+                strSQL = "SELECT * FROM cad_cliente";
+
+    
+
+                da = new MySqlDataAdapter(strSQL, conn);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                dataGridView1.DataSource = dt;
             }
             catch (Exception ex)
             {
